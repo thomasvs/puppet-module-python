@@ -4,6 +4,7 @@ define python::venv::isolate($ensure=present,
   $root = $name
   $owner = $python::venv::owner
   $group = $python::venv::group
+  $python = $python::dev::python
 
   if $ensure == 'present' {
     # Parent directory of root directory. /var/www for /var/www/blog
@@ -17,18 +18,13 @@ define python::venv::isolate($ensure=present,
       }
     }
 
-    $python = $version ? {
-      'latest' => "python",
-      default => "python${version}",
-    }
-
     # Does not successfully run as www-data on Debian:
     exec { "python::venv $root":
       command => "virtualenv -p `which ${python}` ${root}",
       creates => $root,
       notify => Exec["update distribute and pip in $root"],
       require => [File[$root_parent],
-                  Package["${python}-dev"]],
+                  Package["python-virtualenv"]],
     }
 
     # Change ownership of the venv after its created with the default user:
