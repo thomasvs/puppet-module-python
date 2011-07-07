@@ -126,6 +126,15 @@ A Django application does not need a WSGI application module argument:
       django => true,
     }
 
+You can optionally provide a specific settings file to use with Django:
+
+    python::gunicorn::instance { "cms":
+      venv => "/usr/local/venv/cms",
+      src => "/usr/local/src/cms",
+      django => true,
+      django_settings => "settings_production.py",
+    }
+
 The gunicorn instance resource installs the latest gunicorn into the
 virtualenv the first time it's created. If you need a specific version
 simply provide a version argument:

@@ -3,6 +3,7 @@ define python::gunicorn::instance($venv,
                                   $ensure=present,
                                   $wsgi_module="",
                                   $django=false,
+                                  $django_settings="",
                                   $version=undef,
                                   $workers=1) {
   $is_present = $ensure == "present"
@@ -19,6 +20,14 @@ define python::gunicorn::instance($venv,
 
   if $wsgi_module == "" and !$django {
     fail("If you're not using Django you have to define a WSGI module.")
+  }
+
+  if $django_settings != "" and !$django {
+    fail("If you're not using Django you can't define a settings file.")
+  }
+
+  if $wsgi_module != "" and $django {
+    fail("If you're using Django you can't define a WSGI module.")
   }
 
   $gunicorn_package = $version ? {
