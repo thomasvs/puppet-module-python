@@ -18,6 +18,11 @@ define python::venv::isolate($ensure=present,
       }
     }
 
+    Exec {
+      user => $owner,
+      group => $group,
+    }
+
     # Does not successfully run as www-data on Debian:
     exec { "python::venv $root":
       command => "virtualenv -p `which ${python}` ${root}",
@@ -25,13 +30,6 @@ define python::venv::isolate($ensure=present,
       notify => Exec["update distribute and pip in $root"],
       require => [File[$root_parent],
                   Package["python-virtualenv"]],
-    }
-
-    # Change ownership of the venv after its created with the default user:
-    exec { "python::venv $root chown":
-      command => "chown -R $owner:$group $root",
-      onlyif => "test `find $root -not -user $owner -or -not -group $group | wc -l` -gt 0",
-      require => Exec["python::venv $root"],
     }
 
     # Some newer Python packages require an updated distribute

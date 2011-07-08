@@ -1,9 +1,15 @@
-define python::pip::install($package, $venv, $ensure=present) {
+define python::pip::install($package, $venv, $ensure=present,
+                            $owner=undef, $group=undef) {
 
   # Match against whole line if we provide a given version:
   $grep_regex = $package ? {
     /==/ => "^${package}\$",
     default => "^${package}==",
+  }
+
+  Exec {
+    user => $owner,
+    group => $group,
   }
 
   if $ensure == 'present' {
