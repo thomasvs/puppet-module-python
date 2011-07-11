@@ -44,6 +44,7 @@ define python::venv::isolate($ensure=present,
         venv => $root,
         owner => $owner,
         group => $group,
+        require => Exec["python::venv $root"],
       }
     }
 
