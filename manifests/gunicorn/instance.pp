@@ -41,6 +41,8 @@ define python::gunicorn::instance($venv,
         package => $gunicorn_package,
         ensure => $ensure,
         venv => $venv,
+        owner => $owner,
+        group => $group,
         require => Python::Venv::Isolate[$venv],
         before => File[$initscript];
 
@@ -49,6 +51,8 @@ define python::gunicorn::instance($venv,
         package => "setproctitle",
         ensure => $ensure,
         venv => $venv,
+        owner => $owner,
+        group => $group,
         require => Python::Venv::Isolate[$venv],
         before => File[$initscript];
     }
