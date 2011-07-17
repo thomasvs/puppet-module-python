@@ -11,6 +11,7 @@ CHOWN=""
 CHOWN="-c<%= owner %>:<%= group %>"
 <% end %>
 SOCKET=<%= socket %>
+RUNDIR=<%= rundir %>
 PIDFILE=<%= pidfile %>
 LOGFILE=<%= logfile %>
 WORKERS=<%= workers %>
@@ -24,6 +25,13 @@ test -x $DAEMON || exit 0
 set -e
 
 . /lib/lsb/init-functions
+
+if [ ! -d $RUNDIR ]; then
+  mkdir -p $RUNDIR
+  <% if owner != 'undef' and group != 'undef' %>
+  chown <%= owner %>:<%= group%> $RUNDIR
+  <% end %>
+fi
 
 case "$1" in
   start)
