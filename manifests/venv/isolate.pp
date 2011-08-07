@@ -21,6 +21,7 @@ define python::venv::isolate($ensure=present,
     Exec {
       user => $owner,
       group => $group,
+      cwd => "/tmp",
     }
 
     # Does not successfully run as www-data on Debian:

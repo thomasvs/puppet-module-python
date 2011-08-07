@@ -10,6 +10,7 @@ define python::pip::install($package, $venv, $ensure=present,
   Exec {
     user => $owner,
     group => $group,
+    cwd => "/tmp",
   }
 
   if $ensure == 'present' {

@@ -7,6 +7,7 @@ define python::pip::requirements($venv, $owner=undef, $group=undef) {
   Exec {
     user => $owner,
     group => $group,
+    cwd => "/tmp",
   }
 
   file { $requirements:
