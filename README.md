@@ -17,6 +17,9 @@ Puppet 2.6. Patches for other operating systems welcome.
 TODO
 ----
 
+* Use /etc/gunicorn.d/ for instance configs and simplify
+  /etc/init.d/gunicorn. Possibly use a single gunicorn
+  init script like in Debian.
 * Uninstallation of packages no longer provided in the
   requirements file.
 
