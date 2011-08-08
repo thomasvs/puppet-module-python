@@ -36,12 +36,6 @@ define python::gunicorn::instance($venv,
   }
 
   if $is_present {
-    file { $src:
-      ensure => directory,
-      owner => $owner,
-      group => $group,
-    }
-
     python::pip::install {
       "$gunicorn_package in $venv":
         package => $gunicorn_package,
