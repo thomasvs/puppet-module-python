@@ -5,7 +5,8 @@ define python::gunicorn::instance($venv,
                                   $django=false,
                                   $django_settings="",
                                   $version=undef,
-                                  $workers=1) {
+                                  $workers=1,
+                                  $timeout=30) {
   $is_present = $ensure == "present"
 
   $rundir = $python::gunicorn::rundir
