@@ -15,7 +15,7 @@ RUNDIR=<%= rundir %>
 PIDFILE=<%= pidfile %>
 LOGFILE=<%= logfile %>
 WORKERS=<%= workers %>
-TIMEOUT=<%= timeout %>
+TIMEOUT=<%= timeout_seconds %>
 MODULE=<%= django ? django_settings : wsgi_module %>
 
 DAEMON_OPTS="-b $SOCKET -p $PIDFILE --log-file $LOGFILE \
