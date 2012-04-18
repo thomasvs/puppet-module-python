@@ -60,7 +60,7 @@ case "$1" in
     killproc -p $PIDFILE -QUIT $NAME || true
     sleep 1
     cd $SRC
-    daemon --user $CHOWN --pidfile $PIDFILE $DAEMON $DAEMON_OPTS || true
+    daemon $CHOWN --pidfile $PIDFILE $DAEMON $DAEMON_OPTS || true
     echo "$NAME."
 	;;
   reload)
