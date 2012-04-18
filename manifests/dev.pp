@@ -5,8 +5,13 @@ class python::dev($ensure=present, $version=latest) {
     default => "python${version}",
   }
 
-  # python-dev packages depends on the correct python package in Debian:
-  package { "${python}-dev":
+  # python development packages depends on the correct python package:
+  $package_suffix = $operatingsystem ? {
+    /(?i)centos|fedora|redhat/ => 'devel',
+    default                    => 'dev',
+  }
+
+  package { "${python}-${package_suffix}":
     ensure => $ensure,
   }
 }
