@@ -32,5 +32,6 @@ define python::pip::requirements($venv, $owner=undef, $group=undef) {
     cwd => $venv,
     subscribe => Exec["create new checksum of $name requirements"],
     refreshonly => true,
+    timeout => 1800, # sometimes, this can take a while
   }
 }
