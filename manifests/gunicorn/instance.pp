@@ -59,9 +59,14 @@ define python::gunicorn::instance($venv,
     }
   }
 
+  $init_template = $::operatingsystem ? {
+    /(?i)centos|fedora|redhat/ => "python/gunicorn.rhel.init.erb",
+    default => "python/gunicorn.deb.init.erb",
+  }
+
   file { $initscript:
     ensure => $ensure,
-    content => template("python/gunicorn.init.erb"),
+    content => template($init_template),
     mode => 744,
     require => File["/etc/logrotate.d/gunicorn-${name}"],
   }
