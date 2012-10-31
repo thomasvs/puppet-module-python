@@ -23,15 +23,17 @@ define python::pip::requirements($venv, $owner=undef, $group=undef) {
   # we can detect when it changes:
   exec { "create new checksum of $name requirements":
     command => "sha1sum $requirements > $checksum",
-    unless => "sha1sum -c $checksum",
     require => File[$requirements],
+    refreshonly => true,
   }
 
   exec { "update $name requirements":
     command => "$venv/bin/pip install -Ur $requirements",
     cwd => $venv,
-    subscribe => Exec["create new checksum of $name requirements"],
-    refreshonly => true,
     timeout => 1800, # sometimes, this can take a while
+    require => File[$requirements],
+    unless => "sha1sum -c $checksum",
+    notify => Exec["create new checksum of $name requirements"],
+    logoutput => "on_failure",
   }
 }
