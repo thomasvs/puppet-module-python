@@ -4,6 +4,8 @@ define python::gunicorn::instance($venv,
                                   $wsgi_module="",
                                   $django=false,
                                   $django_settings="",
+                                  $paste=false,
+                                  $paste_settings="",
                                   $version=undef,
                                   $workers=1,
                                   $timeout_seconds=30) {
@@ -19,16 +21,20 @@ define python::gunicorn::instance($venv,
   $socket = "unix:$rundir/$name.sock"
   $logfile = "$logdir/$name.log"
 
-  if $wsgi_module == "" and !$django {
-    fail("If you're not using Django you have to define a WSGI module.")
+  if $wsgi_module == "" and !($django or $paste) {
+    fail("If you're not using Django or Paste you have to define a WSGI module.")
   }
 
   if $django_settings != "" and !$django {
     fail("If you're not using Django you can't define a settings file.")
   }
 
-  if $wsgi_module != "" and $django {
-    fail("If you're using Django you can't define a WSGI module.")
+  if $paste_settings != "" and !$paste {
+    fail("If you're not using Paste you can't define a settings file.")
+  }
+
+  if $wsgi_module != "" and ($django or $paste) {
+    fail("If you're using Django or Paste you can't define a WSGI module.")
   }
 
   $gunicorn_package = $version ? {

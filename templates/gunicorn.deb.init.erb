@@ -19,7 +19,7 @@ NAME=gunicorn-<%= name %>
 DESC=$NAME
 VENV=<%= venv %>
 SRC=<%= src %>
-DAEMON=$VENV/bin/gunicorn<% if django %>_django<% end %>
+DAEMON=$VENV/bin/gunicorn<% if django %>_django<% end %><% if paste %>_paster<% end %>
 <% if owner == 'undef' or group == 'undef' %>
 CHOWN=""
 <% else %>
@@ -31,7 +31,7 @@ PIDFILE=<%= pidfile %>
 LOGFILE=<%= logfile %>
 WORKERS=<%= workers %>
 TIMEOUT=<%= timeout_seconds %>
-MODULE=<%= django ? django_settings : wsgi_module %>
+MODULE=<%= django ? django_settings : (paste ? paste_settings : wsgi_module) %>
 
 DAEMON_OPTS="-b $SOCKET -p $PIDFILE --log-file $LOGFILE \
 --workers $WORKERS -t $TIMEOUT --daemon --name $NAME $MODULE"
