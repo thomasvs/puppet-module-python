@@ -32,8 +32,13 @@ LOGFILE=<%= logfile %>
 WORKERS=<%= workers %>
 TIMEOUT=<%= timeout_seconds %>
 MODULE=<%= django ? django_settings : (paste ? paste_settings : wsgi_module) %>
+<% if conffile == '' %>
+CONFFILE=""
+<% else %>
+CONFFILE="-c <%= conffile %>"
+<% end %>
 
-DAEMON_OPTS="-b $SOCKET -p $PIDFILE --log-file $LOGFILE \
+DAEMON_OPTS="$CONFFILE -b $SOCKET -p $PIDFILE --log-file $LOGFILE \
 --workers $WORKERS -t $TIMEOUT --daemon --name $NAME $MODULE"
 
 test -x $DAEMON || exit 0
