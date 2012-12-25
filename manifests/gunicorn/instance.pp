@@ -8,7 +8,8 @@ define python::gunicorn::instance($venv,
                                   $paste_settings="",
                                   $version=undef,
                                   $workers=1,
-                                  $timeout_seconds=30) {
+                                  $timeout_seconds=30,
+                                  $conffile="") {
   $is_present = $ensure == "present"
 
   $rundir = $python::gunicorn::rundir
