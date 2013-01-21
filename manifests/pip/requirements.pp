@@ -16,7 +16,7 @@ define python::pip::requirements($venv, $owner=undef, $group=undef) {
     owner => $owner,
     group => $group,
     content => "# Puppet will install packages listed here and update them if
-# the the contents of this file changes.",
+# the contents of this file change.",
   }
 
   # We create a sha1 checksum of the requirements file so that
