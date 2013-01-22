@@ -1,6 +1,7 @@
 # Installs packages in a requirements file for a virtualenv.
 # Pip tries to upgrade packages when the requirements file changes.
-define python::pip::requirements($venv, $owner=undef, $group=undef) {
+define python::pip::requirements($venv, $owner=undef, $group=undef,
+    $requirements_source=undef) {
   $requirements = $name
   $checksum = "$venv/requirements.checksum"
 
@@ -10,13 +11,23 @@ define python::pip::requirements($venv, $owner=undef, $group=undef) {
     cwd => "/tmp",
   }
 
+
+  # if a source is given for requirements, we replace with the provided
+  # content
+  if ($requirements_source) {
+    $rsource = $requirements_source
+    $replace = true
+  } else {
+    $rsource = "puppet:///modules/python/requirements.txt"
+    $replace = false
+  }
+
   file { $requirements:
     ensure => present,
-    replace => false,
+    replace => $replace,
     owner => $owner,
     group => $group,
-    content => "# Puppet will install packages listed here and update them if
-# the contents of this file change.",
+    source => $rsource
   }
 
   # We create a sha1 checksum of the requirements file so that
