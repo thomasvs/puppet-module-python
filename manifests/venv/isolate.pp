@@ -9,7 +9,7 @@ define python::venv::isolate($ensure=present,
 
   if $ensure == 'present' {
     # Parent directory of root directory. /var/www for /var/www/blog
-    $root_parent = inline_template("<%= root.match(%r!(.+)/.+!)[1] %>")
+    $root_parent = inline_template("<%= @root.match(%r!(.+)/.+!)[1] %>")
 
     if !defined(File[$root_parent]) {
       file { $root_parent:
