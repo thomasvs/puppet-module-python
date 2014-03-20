@@ -1,7 +1,23 @@
-class python::dev($ensure=present, $version=latest) {
+# = Class: python::dev
+#
+# This class installs python development packages
+#
+# == Parameters
+#
+# [* version *]
+#   The major/minor python version after which base packages are named.
+#   For example, '26' to install the python26 family of packages.
+#   Defaults to 'latest', which actually installs 'python' (and not
+#   necessarily the latest packages)
+#
+# [* pkgversion *]
+#   The specific package version/release you want installed.
+#   If not specified, then no particular version is enforced.
+#
+class python::dev($ensure=present, $version=latest, $pkgversion='') {
 
   $python = $version ? {
-    'latest' => "python",
+    'latest' => 'python',
     default => "python${version}",
   }
 
@@ -11,7 +27,13 @@ class python::dev($ensure=present, $version=latest) {
     default                     => 'dev',
   }
 
+  if ($ensure == present and $pkgversion) {
+    $my_ensure = $pkgversion
+  } else {
+    $my_ensure = $ensure
+  }
+
   package { "${python}-${package_suffix}":
-    ensure => $ensure,
+    ensure => $my_ensure,
   }
 }
