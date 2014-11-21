@@ -39,7 +39,7 @@ define python::pip::requirements($venv, $owner=undef, $group=undef,
   }
 
   exec { "update $name requirements":
-    command => "$venv/bin/pip install -Ur $requirements",
+    command => "$venv/bin/pip install -r $requirements",
     cwd => $venv,
     timeout => 0, # sometimes, this can take a while
     require => File[$requirements],
