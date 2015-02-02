@@ -1,11 +1,11 @@
 define python::venv::isolate($ensure=present,
                              $version=latest,
                              $requirements=undef,
-                             $requirements_source=undef) {
+                             $requirements_source=undef,
+                             $owner=$python::venv::owner,
+                             $group=$python::venv::group,
+                             $python=$python::dev::python) {
   $root = $name
-  $owner = $python::venv::owner
-  $group = $python::venv::group
-  $python = $python::dev::python
 
   if $ensure == 'present' {
     # Parent directory of root directory. /var/www for /var/www/blog
@@ -29,7 +29,7 @@ define python::venv::isolate($ensure=present,
     exec { "python::venv $root":
       command    => "virtualenv -p `which ${python}` ${root}",
       creates    => $root,
-      logoutput  => on_failure, 
+      logoutput  => on_failure,
       notify     => Exec["update distribute and pip in $root"],
       require    => [File[$root_parent],
                   Package["python-virtualenv"]],
